@@ -1,0 +1,51 @@
+@startuml
+skinparam Monochrome true
+autonumber
+
+participant Cliente as CLIENTE
+participant Pagina_Produto as PRODUTO
+participant BaseDeDados as BASE
+participant Carrinho as CARRINHO
+participant ClienteLogin as CLIENTELOGIN
+participant Pagamento as PAGAMENTO
+participant ConfirmacaoCompra as CONF_COMPRA
+
+
+
+CLIENTE -> PRODUTO : Pesquisa Produto
+
+opt OPCAO A
+PRODUTO -->  CLIENTE: Produto Não Encontrado
+else OPCAO B
+PRODUTO --> CLIENTE: Produto Encontrado
+end
+
+PRODUTO -> BASE: Verificar estoque
+
+opt OPCAO A
+BASE --> PRODUTO: Não Há estoque
+else OPCAO B
+BASE --> PRODUTO: Há estoque
+end
+
+BASE -> CARRINHO: Adicionar ao Carrinho
+
+CARRINHO -> CLIENTELOGIN: Verificar se há conta
+
+opt OPCAO A
+CLIENTELOGIN --> CLIENTE: Conta Não Existe
+else OPCAO B
+CLIENTELOGIN --> CLIENTE: Consta Existe
+end 
+
+CLIENTELOGIN -> PAGAMENTO: Efetuar pagamento
+
+opt OPCAO A
+CLIENTELOGIN <-- PAGAMENTO: Pagamento não aceito
+else OPCAO B
+CLIENTELOGIN <-- PAGAMENTO: Pagamento aceito
+end
+
+PAGAMENTO --> CONF_COMPRA : Confirma o pagamento recebido
+
+@enduml
